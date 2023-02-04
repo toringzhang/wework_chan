@@ -2,10 +2,9 @@ package main
 
 import (
 	"flag"
+	"github.com/toringzhang/wework_chan/server"
 	"log"
 	"net/http"
-
-	server "github.com/toringzhang/wework_chan/server/wework"
 )
 
 var (
@@ -25,7 +24,10 @@ func main() {
 	flag.Parse()
 
 	s := server.NewWework(token, encodingAESKey, corpID)
-	http.HandleFunc("/api/v1/verify", s.VerifyMessage)
+	http.HandleFunc("/api/v1/verify", server.LogHandler(s.VerifyMessage))
+	// 反向代理，企业微信必须是可信IP
+	http.HandleFunc("/cgi-bin/gettoken", server.LogHandler(server.ReverseProxyHandler("https://qyapi.weixin.qq.com")))
+	http.HandleFunc("/cgi-bin/message/send", server.LogHandler(server.ReverseProxyHandler("https://qyapi.weixin.qq.com")))
 
 	log.Printf("server at %s...", addr)
 	log.Fatal(http.ListenAndServe(addr, nil))

@@ -1,10 +1,9 @@
 package server
 
 import (
+	"github.com/toringzhang/wework_chan/pkg/wxbizmsgcrypt"
 	"log"
 	"net/http"
-
-	"github.com/toringzhang/wework_chan/pkg/wxbizmsgcrypt"
 )
 
 type wework struct {

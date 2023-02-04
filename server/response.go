@@ -24,7 +24,7 @@ func Response(w http.ResponseWriter, r *http.Request, data interface{}, httpCode
 	}
 }
 
-// Response : http response func
+// ResponseOk : http response func
 func ResponseOk(w http.ResponseWriter, r *http.Request, msg string, errCode int) {
 	type resp struct {
 		ErrCode int    `json:"errcode"`
